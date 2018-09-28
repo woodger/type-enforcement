@@ -1,0 +1,26 @@
+{
+  "name": "type-enforcement",
+  "version": "1.0.0",
+  "description": "Type enforcement is a class-based typing",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/woodger/type-enforcement"
+  },
+  "keywords": [
+    "typification",
+    "arguments"
+  ],
+  "author": {
+    "name": "Stanislav Woodger",
+    "email": "woodger@ya.ru",
+    "url": "https://www.npmjs.com/package/type-enforcement"
+  },
+  "engines": {
+    "node": ">=8.2.1"
+  },
+  "license": "MIT"
+}
