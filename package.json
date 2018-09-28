@@ -16,8 +16,7 @@
   ],
   "author": {
     "name": "Stanislav Woodger",
-    "email": "woodger@ya.ru",
-    "url": "https://www.npmjs.com/package/type-enforcement"
+    "email": "woodger@ya.ru"
   },
   "engines": {
     "node": ">=8.2.1"
