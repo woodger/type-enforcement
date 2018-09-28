@@ -1,8 +1,8 @@
-## Use examples
+## Examples
 
 ### Validate
 
-This example shows the work of a larger list of values that are grouped into groups: primitives, embedded objects, and their own
+This example shows the work of a larger list of values that are grouped into groups: [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), [standard built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) and custom class.
 
 ```js
 const TypeEnforcement = require('type-enforcement');

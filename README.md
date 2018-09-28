@@ -3,7 +3,7 @@
 <!-- [START badges] -->
 <!-- [END badges] -->
 
-##### [API docs](blob/master/docs/api.md) | [examples](blob/master/docs/examples.md)
+##### [API docs](docs/api.md) | [examples](docs/examples.md)
 
 <!-- [START usecases] -->
 TypeEnforcement is a js library for class-based typing.
