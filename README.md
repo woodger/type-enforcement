@@ -3,7 +3,7 @@
 <!-- [START badges] -->
 <!-- [END badges] -->
 
-##### [API docs](https://github.com/woodger/type-enforcement/docs/api.md) | [examples](https://github.com/woodger/type-enforcement/docs/examples.md)
+##### [API docs](blob/master/docs/api.md) | [examples](blob/master/docs/examples.md)
 
 <!-- [START usecases] -->
 TypeEnforcement is a js library for class-based typing.

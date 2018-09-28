@@ -70,7 +70,7 @@ const te = new TypeEnforcement({
   - `skip` <[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)> The `skip` option allows you to check only part of the document, defaults `false`.
 - returns: <[Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null)>
 
-Unlike the [instanceof](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) operator, [te.validate](#tevalidateorder-doc-options) checks if the value of the `constructor.prototype` rule matches only on the current `prototype` If all the values of the fields correspond to the scheme, then returns `null` otherwise returns an `error`.
+Unlike the [instanceof](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) operator, this method validate if the value of the `constructor.prototype` rule matches only on the current `prototype` If all the values of the fields correspond to the scheme, then returns `null` otherwise returns an `error`.
 
 ```js
 const TypeEnforcement = require('type-enforcement');
@@ -126,6 +126,8 @@ example(1, []); // 1
 ```
 
 In the example above, the `bar` field is omitted.
+
+##### [More examples](examples.md)
 
 #### te.normalise(order, doc)
 
