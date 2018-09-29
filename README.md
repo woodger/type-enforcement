@@ -23,7 +23,6 @@ To use TypeEnforcement in your project, run:
 
 ```bash
 npm i type-enforcement
-
 ```
 
 ### Usage
