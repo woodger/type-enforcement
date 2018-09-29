@@ -201,5 +201,3 @@ const obj = te.normalise('example', {
 
 console.log(obj); // { foo: 0, bar: '' }
 ```
-
-### More examples
