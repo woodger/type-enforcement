@@ -1,6 +1,7 @@
 # TypeEnforcement
 
 <!-- [START badges] -->
+[![Build Status](https://travis-ci.com/woodger/type-enforcement.svg?branch=master)](https://travis-ci.com/woodger/type-enforcement)
 <!-- [END badges] -->
 
 ##### [API docs](docs/api.md) | [examples](docs/examples.md)
