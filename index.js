@@ -107,13 +107,15 @@ class TypeEnforcement {
       const names = Object.keys(sample);
 
       names.forEach(i => {
-        const obj = sample[i];
+        const Class = sample[i];
 
         if (
-          obj === undefined ||
-          obj === null ||
-          availableTypeProto.indexOf(typeof obj.__proto__) === -1
+          Class === undefined ||
+          Class === null ||
+          availableTypeProto.indexOf(typeof Class.__proto__) === -1
         ) {
+          console.log('Fack!!!');
+
           throw error.unxpectedClass(i);
         }
       });
@@ -194,12 +196,10 @@ class TypeEnforcement {
     }
 
     for (let i of fields) {
-      if (doc.hasOwnProperty(i)) {
-        let Class = rule[i];
-        let value = doc[i];
+      let Class = rule[i];
+      let value = doc[i];
 
-        doc[i] = enforcement.normalise(Class, value);
-      }
+      doc[i] = enforcement.normalise(Class, value);
     }
 
     return doc;

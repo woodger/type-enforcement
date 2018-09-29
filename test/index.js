@@ -1,4 +1,5 @@
 const assert = require('assert');
+const {describe, it} = require('mocha');
 const TypeEnforcement = require('..');
 
 
@@ -25,6 +26,17 @@ describe(`class TypeEnforcement`, function() {
       assert.throws(() => {
         new TypeEnforcement({
           test: undefined
+        });
+      });
+    });
+
+
+    it(`Class is a required value to the declaration`, function() {
+      assert.throws(() => {
+        new TypeEnforcement({
+          test: {
+            field: undefined
+          }
         });
       });
     });
@@ -168,11 +180,15 @@ describe(`class TypeEnforcement`, function() {
 
 
     describe(`Use primitives, standard built-in objects and custom class`, function() {
+      class Foo {}
+
       const te = new TypeEnforcement({
         test: {
           s: String,
+          n: Number,
           a: Array,
-          m: Map
+          f: Function,
+          c: Foo
         }
       });
 
@@ -181,8 +197,10 @@ describe(`class TypeEnforcement`, function() {
         assert.throws(() => {
           te.normalise('test', {
             s: '',
+            n: 1,
             a: [],
-            m: new Map(),
+            f: () => {},
+            c: new Foo(),
             u: '... some data'
           })
         });
@@ -192,14 +210,17 @@ describe(`class TypeEnforcement`, function() {
       it(`A document with incorrect value types must be mapped to a schema`, function() {
         let doc = te.normalise('test', {
           s: undefined,
-          a: '1',
-          m: []
+          n: '1',
+          a: 4,
+          f: undefined,
+          c: []
         });
-        
-        assert.strictEqual(
-          doc.s === '' && doc.a[0] === '1' && doc.m instanceof Map,
-          true
-        );
+
+        assert.strictEqual(doc.s, '');
+        assert.strictEqual(doc.n, 1);
+        assert.strictEqual(doc.a.length, 4);
+        assert.strictEqual(typeof doc.f, 'function');
+        assert.strictEqual(doc.c instanceof Foo, true);
       });
     });
   });
