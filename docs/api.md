@@ -9,7 +9,7 @@
 
 #### class: TypeEnforcement
 
-Browser-compatible `TypeEnforcement` class, implemented by following the [ES2015](http://www.ecma-international.org/publications/standards/Ecma-262.htm) Standard
+Browser-compatible `TypeEnforcement` class, implemented by following the [ECMAScript® 2015 Language Specification](https://www.ecma-international.org/ecma-262/6.0/index.html) Standard
 
 #### constructor: new TypeEnforcement(shema)
 
@@ -37,6 +37,7 @@ const te = new TypeEnforcement({
   }
 });
 ```
+
 > **NOTE** When using a undefined or null, an exception will be thrown.
 
 In addition to primitives, you can use [standard built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) and custom class, for example:
