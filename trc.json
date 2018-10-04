@@ -1,0 +1,15 @@
+{
+  "typeProto": [
+    "function",
+    "object"
+  ],
+  "errtmpl": [
+    "Unexpected argument or 'undefined' or 'null'",
+    "Unexpected sample '$&' or 'undefined' or 'null'",
+    "Unexpected class '$&' or 'undefined' or 'null'",
+    "Order '$&' not found",
+    "Missing fields '$&' in order '$&'",
+    "Redundant fields '$&' in order '$&'",
+    "Invalid value '$&' in order '$&'. Expected $&"
+  ]
+}

@@ -1,6 +1,6 @@
 ## Examples
 
-### Validate
+### [te.validate(order, doc, [options])](https://github.com/woodger/type-enforcement#tevalidateorder-doc-options)
 
 This example shows the work of a larger list of values that are grouped into groups: [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), [standard built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) and custom class.
 
@@ -10,13 +10,13 @@ const TypeEnforcement = require('type-enforcement');
 class MyClass {}
 
 const te = new TypeEnforcement({
-  primitive: {
+  '#primitive': {
     string: String,
     number: Number,
     boolean: Boolean,
     symbol: Symbol
   },
-  inline: {
+  '#inline': {
     object: Object,
     invoke: Function,
     regexp: RegExp,
@@ -25,21 +25,21 @@ const te = new TypeEnforcement({
     error: Error,
     promise: Promise
   },
-  custom: {
+  '#custom': {
     class: MyClass
   }
 });
 
 
 
-example('primitive', {
+example('#primitive', {
   string: '',
   number: 1,
   boolean: true,
   symbol: Symbol()
 });
 
-example('inline', {
+example('#inline', {
   object: {},
   invoke: () => {},
   regexp: /\d/,
@@ -49,17 +49,17 @@ example('inline', {
   promise: new Promise(() => {})
 });
 
-example('custom', {
+example('#custom', {
   class: new MyClass()
 });
 
 
 
-function example(rule, docs) {
-  let err = te.validate(rule, docs);
+function example(order, doc) {
+  let err = te.validate(order, doc);
 
   if (err === null) {
-    console.log(`${rule} values correspond to declared types`);
+    console.log(`'${order}' values correspond to declared types`);
   }
   else {
     throw err;
