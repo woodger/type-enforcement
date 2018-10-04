@@ -3,7 +3,7 @@
 <!-- [START badges] -->
 [![License](https://img.shields.io/npm/l/express.svg)](https://github.com/woodger/type-enforcement/blob/master/LICENSE)
 [![Build Status](https://travis-ci.com/woodger/type-enforcement.svg?branch=master)](https://travis-ci.com/woodger/type-enforcement)
-[![codecov](https://codecov.io/gh/woodger/type-enforcement/branch/master/graph/badge.svg)](https://codecov.io/gh/woodger/type-enforcement)
+[![Coverage Status](https://coveralls.io/repos/github/woodger/type-enforcement/badge.svg)](https://coveralls.io/github/woodger/type-enforcement)
 <!-- [END badges] -->
 
 ##### [API docs](https://github.com/woodger/type-enforcement/blob/master/docs/api.md) | [Examples](https://github.com/woodger/type-enforcement/blob/master/docs/examples.md)
