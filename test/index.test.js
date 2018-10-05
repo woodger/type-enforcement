@@ -4,15 +4,15 @@ const TypeEnforcement = require('..');
 
 
 
-describe(`class TypeEnforcement`, () => {
-  describe(`constructor: new TypeEnforcement(shema)`, () => {
-    it(`A required argument for the constructor is an object type`, () => {
+describe(`class TypeEnforcement`, function () {
+  describe(`constructor: new TypeEnforcement(shema)`, function () {
+    it(`A required argument for the constructor is an object type`, function () {
       assert.throws(() => {
         return new TypeEnforcement();
       });
     });
 
-    it(`The object passed to the constructor must be frozen`, () => {
+    it(`The object passed to the constructor must be frozen`, function () {
       let rules = {};
       let te = new TypeEnforcement(rules);
       let equal = Object.is(rules, te.rules);
@@ -21,7 +21,7 @@ describe(`class TypeEnforcement`, () => {
       assert(equal && frozen);
     });
 
-    it(`An object is a required value to the rule`, () => {
+    it(`An object is a required value to the rule`, function () {
       assert.throws(() => {
         return new TypeEnforcement({
           test: undefined
@@ -29,7 +29,7 @@ describe(`class TypeEnforcement`, () => {
       });
     });
 
-    it(`Class is a required value to the declaration`, () => {
+    it(`Class is a required value to the declaration`, function () {
       assert.throws(() => {
         return new TypeEnforcement({
           test: {
@@ -41,44 +41,34 @@ describe(`class TypeEnforcement`, () => {
   });
 
 
-  describe(`te.validate(order, doc, [options])`, () => {
-    describe(`One rule without fields`, () => {
+  describe(`te.validate(order, doc, [options])`, function () {
+    describe(`One rule without fields`, function () {
       const te = new TypeEnforcement({
         test: {}
       });
 
-      it(`A validation call without arguments returns an error`, () => {
-        let err = te.validate();
-        assert(err instanceof Error);
+      it(`A validation call without arguments returns an error`, function () {
+        assert(te.validate());
       });
 
-      it(`The first argument is a string type`, () => {
-        let err = te.validate(null);
-
-        assert(err instanceof Error);
-        assert(err.message === `Unexpected argument or 'undefined' or 'null'`);
+      it(`The first argument is a string type`, function () {
+        assert(te.validate(null));
       });
 
-      it(`The second argument is a document the object type`, () => {
-        let err = te.validate('test', null);
-        assert(err instanceof Error);
+      it(`The second argument is a document the object type`, function () {
+        assert(te.validate('test', null));
       });
 
-      it(`An empty document will pass validation`, () => {
-        let err = te.validate('test', {});
-        assert.ifError(err);
+      it(`The rule should contain`, function () {
+        assert(te.validate('unknown', {}));
       });
 
-      it(`The rule should contain`, () => {
-        let err = te.validate('unknown', {});
-        
-        assert(err instanceof Error);
-        assert(err.message === `Order 'unknown' not found`);
+      it(`An empty document will pass validation`, function () {
+        assert.ifError(te.validate('test', {}));
       });
     });
 
-
-    describe(`Use primitives, standard built-in objects and custom class`, () => {
+    describe(`Use primitives, standard built-in objects and custom class`, function () {
       const te = new TypeEnforcement({
         test: {
           s: String,
@@ -87,65 +77,53 @@ describe(`class TypeEnforcement`, () => {
         }
       });
 
-      it(`A document with missing fields will not pass the test`, () => {
-        let err = te.validate('test', {
+      it(`A document with missing fields will not pass the test`, function () {
+        assert(te.validate('test', {
           s: '',
           a: []
-        });
-
-        assert(err instanceof Error);
+        }));
       });
 
-      it(`'undefined' type does not pass validation`, () => {
-        let err = te.validate('test', {
+      it(`'undefined' type does not pass validation`, function () {
+        assert(te.validate('test', {
           s: undefined,
           a: [],
           m: new Map()
-        });
-
-        assert(err instanceof Error);
+        }));
       });
 
-      it(`'null' type does not pass validation`, () => {
-        let err = te.validate('test', {
+      it(`'null' type does not pass validation`, function () {
+        assert(te.validate('test', {
           s: null,
           a: [],
           m: new Map()
-        });
-
-        assert(err instanceof Error);
+        }));
       });
 
-      it(`Document with missing fields and options 'skip' pass validation`, () => {
-        let err = te.validate('test', {
+      it(`Document with missing fields and options 'skip' pass validation`, function () {
+        assert.ifError(te.validate('test', {
           s: '',
           a: []
         }, {
           skip: true
-        });
-
-        assert.ifError(err);
+        }));
       });
 
-      it(`Document with unexpected fields fails the test`, () => {
-        let err = te.validate('test', {
+      it(`Document with unexpected fields fails the test`, function () {
+        assert(te.validate('test', {
           s: '',
           a: [],
           m: new Map(),
           u: 'is unexpected field'
-        });
-
-        assert(err instanceof Error);
+        }));
       });
 
-      it(`A document with an incorrect field type does not pass the test`, () => {
-        let err = te.validate('test', {
+      it(`A document with an incorrect field type does not pass the test`, function () {
+        assert(te.validate('test', {
           s: 1,
           a: [],
           m: new Map()
-        });
-
-        assert(err instanceof Error);
+        }));
       });
     });
   });
@@ -157,31 +135,31 @@ describe(`class TypeEnforcement`, () => {
         test: {}
       });
 
-      it(`A validation call without arguments should throw an exception`, () => {
+      it(`A validation call without arguments should throw an exception`, function () {
         assert.throws(() => {
           te.normalise();
         });
       });
 
-      it(`Get throw, if the first argument is not a string type`, () => {
+      it(`Get throw, if the first argument is not a string type`, function () {
         assert.throws(() => {
           te.normalise(null);
         });
       });
 
-      it(`The second argument is a document the object type`, () => {
+      it(`The second argument is a document the object type`, function () {
         assert.throws(() => {
           te.normalise('test', null);
         });
       });
 
-      it(`The rule should contain, else should throw an exception`, () => {
+      it(`The rule should contain, else should throw an exception`, function () {
         assert.throws(() => {
           te.normalise('unknown', {});
         });
       });
 
-      it(`An empty document is mapped to a schema without fields`, () => {
+      it(`An empty document is mapped to a schema without fields`, function () {
         let doc = {};
         let obj = te.normalise('test', doc);
 
@@ -190,7 +168,7 @@ describe(`class TypeEnforcement`, () => {
     });
 
 
-    describe(`Use primitives, standard built-in objects and custom class`, () => {
+    describe(`Use primitives, standard built-in objects and custom class`, function () {
       class Foo {}
 
       const te = new TypeEnforcement({
@@ -203,7 +181,7 @@ describe(`class TypeEnforcement`, () => {
         }
       });
 
-      it(`Document with unexpected fields should throw an exception`, () => {
+      it(`Document with unexpected fields should throw an exception`, function () {
         assert.throws(() => {
           te.normalise('test', {
             s: '',
@@ -216,7 +194,7 @@ describe(`class TypeEnforcement`, () => {
         });
       });
 
-      it(`A document with incorrect value types must be mapped to a schema`, () => {
+      it(`A document with incorrect value types must be mapped to a schema`, function () {
         let doc = te.normalise('test', {
           s: undefined,
           n: '1',

@@ -10,13 +10,13 @@ const TypeEnforcement = require('type-enforcement');
 class MyClass {}
 
 const te = new TypeEnforcement({
-  '#primitive()': {
+  '#primitive': {
     string: String,
     number: Number,
     boolean: Boolean,
     symbol: Symbol
   },
-  '#inline()': {
+  '#inline': {
     object: Object,
     invoke: Function,
     regexp: RegExp,
@@ -25,10 +25,35 @@ const te = new TypeEnforcement({
     error: Error,
     promise: Promise
   },
-  '#custom()': {
+  '#custom': {
     class: MyClass
   }
 });
+
+
+
+example('#primitive', {
+  string: '',
+  number: 1,
+  boolean: true,
+  symbol: Symbol()
+});
+
+example('#inline', {
+  object: {},
+  invoke: () => {},
+  regexp: /\d/,
+  array: [],
+  date: new Date(),
+  error: new Error('error description'),
+  promise: new Promise(() => {})
+});
+
+example('#custom', {
+  class: new MyClass()
+});
+
+
 
 function example(order, doc) {
   let err = te.validate(order, doc);
@@ -40,25 +65,4 @@ function example(order, doc) {
     throw err;
   }
 }
-
-example('#primitive()', {
-  string: '',
-  number: 1,
-  boolean: true,
-  symbol: Symbol()
-});
-
-example('#inline()', {
-  object: {},
-  invoke: () => {},
-  regexp: /\d/,
-  array: [],
-  date: new Date(),
-  error: new Error(),
-  promise: new Promise(() => {})
-});
-
-example('#custom()', {
-  class: new MyClass()
-});
 ```

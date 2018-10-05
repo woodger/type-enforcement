@@ -1,10 +1,10 @@
 {
   "name": "type-enforcement",
-  "version": "1.0.9",
+  "version": "1.0.8",
   "description": "TypeEnforcement is a class-based typing",
   "main": "index.js",
   "scripts": {
-    "test": "mocha",
+    "test": "./node_modules/.bin/mocha",
     "coverage": "istanbul cover ./node_modules/mocha/bin/_mocha"
   },
   "repository": {
