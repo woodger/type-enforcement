@@ -2,21 +2,23 @@ const trc = require('./trc');
 
 
 
-const error = (errno, ...yarn) => {
-  let i = 0;
-  let msg = trc.errtmpl[errno].replace('$&', () =>
-    yarn[i++]
-  );
-
-  return new Error(msg);
-};
-
 const globalObjectsPrimitiveType = [
   String,
   Number,
   Boolean,
   Symbol
 ];
+
+const regExpSharp = /#&/g;
+
+const error = (errno, ...yarn) => {
+  let i = 0;
+  let msg = trc.errtmpl[errno].replace(regExpSharp, () =>
+    yarn[i++]
+  );
+
+  return new Error(msg);
+};
 
 const is = {
   object (a) {
@@ -57,7 +59,6 @@ const enforcement = {
     return new Class(value);
   }
 };
-
 
 
 

@@ -54,9 +54,7 @@ describe(`class TypeEnforcement`, () => {
 
       it(`The first argument is a string type`, () => {
         let err = te.validate(null);
-
         assert(err instanceof Error);
-        assert(err.message === `Unexpected argument or 'undefined' or 'null'`);
       });
 
       it(`The second argument is a document the object type`, () => {
@@ -71,9 +69,7 @@ describe(`class TypeEnforcement`, () => {
 
       it(`The rule should contain`, () => {
         let err = te.validate('unknown', {});
-
         assert(err instanceof Error);
-        assert(err.message === `Order 'unknown' not found`);
       });
     });
 
@@ -114,6 +110,7 @@ describe(`class TypeEnforcement`, () => {
         });
 
         assert(err instanceof Error);
+        assert(err.message === `Invalid value 's' in order 'test'. Expected String`);
       });
 
       it(`Document with missing fields and options 'skip' pass validation`, () => {
