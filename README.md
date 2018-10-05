@@ -229,5 +229,3 @@ let doc = te.normalise(example, {
 
 console.log(doc); // { foo: 0, bar: '' }
 ```
-
-##### [More examples](examples.md)
