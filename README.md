@@ -13,7 +13,7 @@
 JavaScript dynamically typed and allows you to declare functions, objects, and variables without declaring a type. Although this feature simplifies the use of the language, it often requires the verification of input data. TypeEnforcement helps verify the types of transmitted values on the runtime.
 <!-- [END usecases] -->
 
-<img src="http://yuml.me/diagram/scruffy;dir:LR/class/,[values{bg:cornsilk}]->[rules],[TypeEnforcement]->declaration[rules],[rules]<>->order[validate()],[rules]<>->order[normalise()],[normalise()]->1[values],[normalise()]->0[throw],[validate()]->0[Error{bg:tomato}],[validate()]->1[null{bg:yellowgreen}]">
+<img src="http://yuml.me/diagram/scruffy;dir:LR/class/[TypeEnforcement]->declaration[rules],[rules]->order[validate()],[values{bg:cornsilk}]->[normalise()],[rules]->order[normalise()],[normalise()]-^correct[values{bg:cornsilk}],[values{bg:cornsilk}]->[validate()],[validate()]<>->0[Error{bg:tomato}],[validate()]<>->1[null{bg:yellowgreen}]">
 
 TypeEnforcement is a js library for class-based typing.
 

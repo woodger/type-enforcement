@@ -71,7 +71,7 @@ describe(`class TypeEnforcement`, () => {
 
       it(`The rule should contain`, () => {
         let err = te.validate('unknown', {});
-        
+
         assert(err instanceof Error);
         assert(err.message === `Order 'unknown' not found`);
       });
