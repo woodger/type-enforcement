@@ -7,13 +7,13 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/woodger/type-enforcement/badge.svg?targetFile=package.json)](https://snyk.io/test/github/woodger/type-enforcement?targetFile=package.json)
 <!-- [END badges] -->
 
-##### [Examples](https://github.com/woodger/type-enforcement/blob/master/docs/examples.md)
+##### [API docs](#api-docs) | [Examples](https://github.com/woodger/type-enforcement/blob/master/docs/examples.md)
 
 <!-- [START usecases] -->
 JavaScript dynamically typed and allows you to declare functions, objects, and variables without declaring a type. Although this feature simplifies the use of the language, it often requires the verification of input data. TypeEnforcement helps verify the types of transmitted values on the runtime.
 <!-- [END usecases] -->
 
-<img src="http://yuml.me/diagram/scruffy;dir:LR/class/[values{bg:cornsilk}]->[rules],[TypeEnforcement]->declaration[rules],[rules]<>->order[validate()],[rules]<>->order[normalise()],[normalise()]->correct[values],[validate()]<>->0[Error{bg:tomato}],[validate()]<>->1[null{bg:yellowgreen}]">
+<img src="http://yuml.me/diagram/scruffy;dir:LR/class/,[values{bg:cornsilk}]->[rules],[TypeEnforcement]->declaration[rules],[rules]<>->order[validate()],[rules]<>->order[normalise()],[normalise()]->1[values],[normalise()]->0[throw],[validate()]->0[Error{bg:tomato}],[validate()]->1[null{bg:yellowgreen}]">
 
 TypeEnforcement is a js library for class-based typing.
 
@@ -38,7 +38,8 @@ npm i type-enforcement
 
 #### class: TypeEnforcement
 
-Browser-compatible `TypeEnforcement` class, implemented by following the [ECMAScript® 2015 Language Specification](https://www.ecma-international.org/ecma-262/6.0/index.html) Standard
+Browser-compatible `TypeEnforcement` class, implemented by following the [ECMAScript® 2018 Language Specification
+](https://www.ecma-international.org/ecma-262/9.0/index.html) Standard.
 
 #### constructor: new TypeEnforcement(shema)
 
@@ -67,7 +68,7 @@ const te = new TypeEnforcement({
 });
 ```
 
-> **NOTE** When using a undefined or null, an exception will be thrown.
+> **NOTE** When using a `undefined` or `null`, an exception will be thrown.
 
 In addition to primitives, you can use [standard built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) and custom class, for example:
 
@@ -97,7 +98,7 @@ const te = new TypeEnforcement({
 - `order` <[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>
 - `doc` <[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)> An object is an enumeration of the rules of the form `field: value`, where` field` is the name of the value being validate, described in `shema`.
 - `options` <[Object](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object)>
-  - `skip` <[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)> The `skip` option allows you to check only part of the document, defaults `false`.
+  - `skip` <[Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean)> The `skip` option allows you to check only part of the document. **Default:** `false`.
 - returns: <[Error](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error) | [null](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null)>
 
 Unlike the [instanceof](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/instanceof) operator, this method validate if the value of the `constructor.prototype` rule matches only on the current `prototype` If all the values of the fields correspond to the scheme, then returns `null` otherwise returns an `error`.
@@ -136,14 +137,14 @@ The `skip` option allows you to check only part of the document, for example:
 const TypeEnforcement = require('type-enforcement');
 
 const te = new TypeEnforcement({
-  example: {
+  '#example()': {
     foo: Number,
     bar: Array
   }
 });
 
 function example(foo, bar) {
-  let err = te.validate('example', { foo }, { skip: true });
+  let err = te.validate('#example()', { foo }, { skip: true });
 
   if (err) {
     throw err;
@@ -157,8 +158,6 @@ example(1, []); // 1
 
 In the example above, the `bar` field is omitted.
 
-##### [More examples](examples.md)
-
 #### te.normalise(order, doc)
 
 - `order` <[String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String)>
@@ -169,12 +168,12 @@ To normalize [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primi
 
 ```js
 // Create document
-let doc = {
+let obj = {
   boo: true,
   now: new Date()
 };
 
-let pack = JSON.stringify(doc);
+let pack = JSON.stringify(obj);
 // '{"boo":true,"now":"2018-09-26T10:38:08.033Z"}'
 //                    ^^^
 //                    this is a string type
@@ -196,23 +195,22 @@ let json = JSON.parse(pack);
 //                    ^^^
 //                    it's still a string type
 
-let obj = te.normalise('example', json);
+let doc = te.normalise('example', json);
 // { boo: true, now: 2018-09-26T10:35:41.345Z }
 //                    ^^^
 //                    this date type
 
-console.log(obj);
+console.log(doc);
 ```
 
-`undefined` is a property of the global object; i.e., it is a variable in global scope. The initial value of `undefined` is the [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) value `undefined`. Note the following example:
+The `undefined` is a property of the global object; i.e., it is a variable in global scope. The initial value of `undefined` is the [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) value `undefined`. Note the following example:
 
 ```js
-Number(undefined) // NaN
-
-Number() // 0
+Number(undefined); // NaN
+Number(); // 0
 ```
 
-In the author's opinion, such behavior is useful. The following example will demonstrate this behavior
+In the author's opinion, such behavior is useful. The following example will demonstrate this behavior.
 
 ```js
 const TypeEnforcement = require('type-enforcement');
@@ -224,10 +222,12 @@ const te = new TypeEnforcement({
   }
 });
 
-const obj = te.normalise('example', {
+let doc = te.normalise(example, {
   foo: undefined,
   bar: undefined
 });
 
-console.log(obj); // { foo: 0, bar: '' }
+console.log(doc); // { foo: 0, bar: '' }
 ```
+
+##### [More examples](examples.md)
