@@ -1,4 +1,4 @@
-# TypeEnforcement
+# Type Enforcement
 
 <!-- [START badges] -->
 [![License](https://img.shields.io/npm/l/express.svg)](https://github.com/woodger/type-enforcement/blob/master/LICENSE)
@@ -10,18 +10,18 @@
 ##### [API docs](#api-docs) | [Examples](https://github.com/woodger/type-enforcement/blob/master/docs/examples.md)
 
 <!-- [START usecases] -->
-JavaScript dynamically typed and allows you to declare functions, objects, and variables without declaring a type. Although this feature simplifies the use of the language, it often requires the verification of input data. TypeEnforcement helps verify the types of transmitted values on the runtime.
+JavaScript dynamically typed and allows you to declare functions, objects, and variables without declaring a type. Although this feature simplifies the use of the language, it often requires the verification of input data. `Type Enforcement` helps verify the types of transmitted values on the runtime.
 <!-- [END usecases] -->
 
 <img src="http://yuml.me/diagram/scruffy;dir:LR/class/[TypeEnforcement]->declaration[rules],[rules]->order[validate()],[values{bg:cornsilk}]->[normalise()],[rules]->order[normalise()],[normalise()]-^correct[values{bg:cornsilk}],[values{bg:cornsilk}]->[validate()],[validate()]<>->0[Error{bg:tomato}],[validate()]<>->1[null{bg:yellowgreen}]">
 
-TypeEnforcement is a js library for class-based typing.
+`Type Enforcement` is a js library for class-based typing.
 
 ## Getting Started
 
 ### Installation
 
-To use TypeEnforcement in your project, run:
+To use `Type Enforcement` in your project, run:
 
 ```bash
 npm i type-enforcement
