@@ -39,7 +39,7 @@ npm i type-enforcement
 #### class: TypeEnforcement
 
 Browser-compatible `TypeEnforcement` class, implemented by following the [ECMAScript® 2018 Language Specification
-](https://www.ecma-international.org/ecma-262/9.0/index.html) Standard.
+](https://www.ecma-international.org/ecma-262/9.0/index.html) standard.
 
 #### constructor: new TypeEnforcement(shema)
 
@@ -114,23 +114,51 @@ const te = new TypeEnforcement({
 });
 
 function example(foo, bar) {
-  let err = te.validate('#example()', { foo, bar });
+  let err = te.validate('#example()', {
+    foo,
+    bar
+  });
 
   if (err) {
     throw err;
   }
-
-  return bar.push(foo);
 }
 
-try {
-  example('1', []);
-}
-catch(e) {
-  console.log(e.message); // Invalid value 'foo' in order 'example'. Expected Number
-}
+example('1'); // throw Error: Invalid value 'foo' in order '#example()'. Expected Number
+
+example(1); // throw Error: Invalid value 'bar' in order '#example()'. Expected Array
+
+example(1, []); // undefined
 ```
 
+The `te.validate` method is especially useful for implementing default parameters using the capabilities of [ECMAScript® 2015 Language Specification
+](https://www.ecma-international.org/ecma-262/6.0/index.html) standard.
+
+```js
+const TypeEnforcement = require('type-enforcement');
+
+const te = new TypeEnforcement({
+  '#example()': {
+    foo: Number,
+    bar: Array
+  }
+});
+
+function example(foo = 0, bar = []) {
+  let err = te.validate('#example()', {
+    foo,
+    bar
+  });
+
+  if (err) {
+    throw err;
+  }
+}
+
+example(); // undefined
+```
+
+This only replaces `undefined` values with defaults, which is sane.
 The `skip` option allows you to check only part of the document, for example:
 
 ```js
@@ -145,15 +173,15 @@ const te = new TypeEnforcement({
 
 function example(foo, bar) {
   let err = te.validate('#example()', { foo }, { skip: true });
-
+                                        // ↑ 'bar' field is omitted
   if (err) {
     throw err;
   }
-
-  return bar.push(foo);
 }
 
-example(1, []); // 1
+example('1'); // throw Error: Invalid value 'foo' in order '#example()'. Expected Number
+
+example(1); // undefined
 ```
 
 In the example above, the `bar` field is omitted.

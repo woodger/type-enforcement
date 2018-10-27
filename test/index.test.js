@@ -7,7 +7,7 @@ describe(`class TypeEnforcement`, () => {
   describe(`constructor: new TypeEnforcement(shema)`, () => {
     it(`A required argument for the constructor is an object type`, () => {
       assert.throws(() => {
-        return new TypeEnforcement();
+        new TypeEnforcement();
       });
     });
 
@@ -22,17 +22,31 @@ describe(`class TypeEnforcement`, () => {
 
     it(`An object is a required value to the rule`, () => {
       assert.throws(() => {
-        return new TypeEnforcement({
+        new TypeEnforcement({
           test: undefined
         });
       });
     });
 
-    it(`Class is a required value to the declaration`, () => {
+    it(`Object is a required value to the declaration`, () => {
       assert.throws(() => {
-        return new TypeEnforcement({
+        new TypeEnforcement({
           test: {
-            field: undefined
+            foo: undefined
+          }
+        });
+      });
+    });
+
+    it(`The prototype object must have a constructor function`, () => {
+      assert.throws(() => {
+        class Foo {}
+
+        Foo.prototype.constructor = null;
+
+        new TypeEnforcement({
+          test: {
+            foo: Foo
           }
         });
       });
@@ -48,17 +62,17 @@ describe(`class TypeEnforcement`, () => {
 
       it(`A validation call without arguments returns an error`, () => {
         let err = te.validate();
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
 
       it(`The first argument is a string type`, () => {
         let err = te.validate(null);
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
 
       it(`The second argument is a document the object type`, () => {
         let err = te.validate('test', null);
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
 
       it(`An empty document will pass validation`, () => {
@@ -68,12 +82,13 @@ describe(`class TypeEnforcement`, () => {
 
       it(`The rule should contain`, () => {
         let err = te.validate('unknown', {});
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
     });
 
 
-    describe(`Use primitives, standard built-in objects and custom class`, () => {
+    describe(
+      `Use primitives, standard built-in objects and custom class`, () => {
       const te = new TypeEnforcement({
         test: {
           s: String,
@@ -88,7 +103,7 @@ describe(`class TypeEnforcement`, () => {
           a: []
         });
 
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
 
       it(`'undefined' type does not pass validation`, () => {
@@ -98,7 +113,7 @@ describe(`class TypeEnforcement`, () => {
           m: new Map()
         });
 
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
 
       it(`'null' type does not pass validation`, () => {
@@ -108,11 +123,15 @@ describe(`class TypeEnforcement`, () => {
           m: new Map()
         });
 
-        assert(err instanceof Error);
-        assert(err.message === `Invalid value 's' in order 'test'. Expected String`);
+        assert(err instanceof TypeError);
+        assert(
+          err.message === `Invalid value 's' in order 'test'. Expected String`
+        );
       });
 
-      it(`Document with missing fields and options 'skip' pass validation`, () => {
+      it(
+        `Document with missing fields and options 'skip' pass validation`,
+        () => {
         let err = te.validate('test', {
           s: '',
           a: []
@@ -131,17 +150,19 @@ describe(`class TypeEnforcement`, () => {
           u: 'is unexpected field'
         });
 
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
 
-      it(`A document with an incorrect field type does not pass the test`, () => {
+      it(
+        `A document with an incorrect field type does not pass the test`,
+        () => {
         let err = te.validate('test', {
           s: 1,
           a: [],
           m: new Map()
         });
 
-        assert(err instanceof Error);
+        assert(err instanceof TypeError);
       });
     });
   });
@@ -153,7 +174,9 @@ describe(`class TypeEnforcement`, () => {
         test: {}
       });
 
-      it(`A validation call without arguments should throw an exception`, () => {
+      it(
+        `A validation call without arguments should throw an exception`,
+        () => {
         assert.throws(() => {
           te.normalise();
         });
@@ -186,7 +209,8 @@ describe(`class TypeEnforcement`, () => {
     });
 
 
-    describe(`Use primitives, standard built-in objects and custom class`, () => {
+    describe(
+      `Use primitives, standard built-in objects and custom class`, () => {
       class Foo {}
 
       const te = new TypeEnforcement({
@@ -212,8 +236,10 @@ describe(`class TypeEnforcement`, () => {
         });
       });
 
-      it(`A document with incorrect value types must be mapped to a schema`, () => {
-        let doc = te.normalise('test', {
+      it(
+        `A document with incorrect value types must be mapped to a schema`,
+        () => {
+        let obj = te.normalise('test', {
           s: undefined,
           n: '1',
           a: 4,
@@ -221,11 +247,11 @@ describe(`class TypeEnforcement`, () => {
           c: []
         });
 
-        assert.strictEqual(doc.s, '');
-        assert.strictEqual(doc.n, 1);
-        assert.strictEqual(doc.a.length, 4);
-        assert.strictEqual(typeof doc.f, 'function');
-        assert.strictEqual(doc.c instanceof Foo, true);
+        assert.strictEqual(obj.s, '');
+        assert.strictEqual(obj.n, 1);
+        assert.strictEqual(obj.a.length, 4);
+        assert.strictEqual(typeof obj.f, 'function');
+        assert.strictEqual(obj.c instanceof Foo, true);
       });
     });
   });
