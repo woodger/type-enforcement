@@ -1,14 +1,12 @@
 const trc = require('./trc');
 
-
-
 const error = (errno, ...yarn) => {
   let i = 0;
-  let msg = trc.errorMessage[errno].replace(/%&/g, () => {
+  const message = trc.errorMessage[errno].replace(/%&/g, () => {
     return yarn[i++];
   });
 
-  return new TypeError(msg);
+  return new TypeError(message);
 };
 
 const objectsPrimitive = [
@@ -19,18 +17,18 @@ const objectsPrimitive = [
 ];
 
 const is = {
-  object(a) {
-    return a !== void 0 && a !== null && typeof a === 'object';
+  object(value) {
+    return value !== undefined && value !== null && typeof value === 'object';
   },
 
-  string(a) {
-    return a !== void 0 && a !== null && typeof a === 'string';
+  string(value) {
+    return value !== undefined && value !== null && typeof value === 'string';
   }
 };
 
 const enforcement = {
   validate(Obj, value) {
-    if (value === void 0 || value === null) {
+    if (value === undefined || value === null) {
       return false;
     }
 
@@ -39,22 +37,20 @@ const enforcement = {
 
   normalise(Obj, value) {
     if (objectsPrimitive.includes(Obj)) {
-      if (value === void 0) {
+      if (value === undefined) {
         return Obj();
       }
 
       return Obj(value);
     }
 
-    if (value === void 0) {
+    if (value === undefined) {
       return new Obj();
     }
 
     return new Obj(value);
   }
 };
-
-
 
 class TypeEnforcement {
   constructor(rules) {
@@ -67,15 +63,15 @@ class TypeEnforcement {
     const map = {};
 
     Object.keys(rules).forEach((i) => {
-      let sample = rules[i];
+      const sample = rules[i];
 
       if (is.object(sample) === false) {
         throw error(1, i);
       }
 
-      let names = Object.keys(sample);
+      const names = Object.keys(sample);
 
-      for (let i of names) {
+      for (const i of names) {
         if (sample[i] === undefined || sample[i] === null) {
           throw error(2, i);
         }
@@ -92,8 +88,6 @@ class TypeEnforcement {
     this.map = map;
   }
 
-
-
   validate(order, doc, {skip = false} = {}) {
     if (is.string(order) === false || is.object(doc) === false) {
       return error(0);
@@ -103,12 +97,12 @@ class TypeEnforcement {
       return error(3, order);
     }
 
-    let fields = Object.keys(doc);
-    let rule = this.rules[order];
-    let map = this.map[order];
+    const fields = Object.keys(doc);
+    const rule = this.rules[order];
+    const map = this.map[order];
 
     if (skip === false) {
-      let missing = map.filter((i) => {
+      const missing = map.filter((i) => {
         return fields.indexOf(i) === -1;
       });
 
@@ -117,7 +111,7 @@ class TypeEnforcement {
       }
     }
 
-    let redundant = fields.filter((i) => {
+    const redundant = fields.filter((i) => {
       return map.indexOf(i) === -1;
     });
 
@@ -125,9 +119,9 @@ class TypeEnforcement {
       return error(5, redundant, order);
     }
 
-    for (let i of fields) {
-      let Obj = rule[i];
-      let value = doc[i];
+    for (const i of fields) {
+      const Obj = rule[i];
+      const value = doc[i];
 
       if (enforcement.validate(Obj, value) === false) {
         return error(6, i, order, Obj.name);
@@ -136,8 +130,6 @@ class TypeEnforcement {
 
     return null;
   }
-
-
 
   normalise(order, doc) {
     if (is.string(order) === false || is.object(doc) === false) {
@@ -148,11 +140,11 @@ class TypeEnforcement {
       throw error(3, order);
     }
 
-    let fields = Object.keys(doc);
-    let rule = this.rules[order];
-    let map = this.map[order];
+    const fields = Object.keys(doc);
+    const rule = this.rules[order];
+    const map = this.map[order];
 
-    let redundant = fields.filter((i) => {
+    const redundant = fields.filter((i) => {
       return map.indexOf(i) === -1;
     });
 
@@ -160,9 +152,9 @@ class TypeEnforcement {
       throw error(5, redundant, order);
     }
 
-    for (let i of fields) {
-      let Obj = rule[i];
-      let value = doc[i];
+    for (const i of fields) {
+      const Obj = rule[i];
+      const value = doc[i];
 
       doc[i] = enforcement.normalise(Obj, value);
     }
