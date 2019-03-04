@@ -1,8 +1,15 @@
-const trc = require('./trc');
+/**
+ * This module for Node.js® implemented by following the ECMAScript® 2018
+ * Language Specification Standard.
+ *
+ * https://www.ecma-international.org/ecma-262/9.0/index.html
+ */
+
+const basic = require('./basic');
 
 const error = (errno, ...yarn) => {
   let i = 0;
-  const message = trc.errorMessage[errno].replace(/%&/g, () => {
+  const message = basic.errorMessage[errno].replace(/%&/g, () => {
     return yarn[i++];
   });
 

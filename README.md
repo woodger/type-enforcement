@@ -1,17 +1,13 @@
 # Type Enforcement
 
-<!-- [START badges] -->
 [![License](https://img.shields.io/npm/l/express.svg)](https://github.com/woodger/type-enforcement/blob/master/LICENSE)
 [![Build Status](https://travis-ci.com/woodger/type-enforcement.svg?branch=master)](https://travis-ci.com/woodger/type-enforcement)
 [![Coverage Status](https://coveralls.io/repos/github/woodger/type-enforcement/badge.svg)](https://coveralls.io/github/woodger/type-enforcement)
 [![Known Vulnerabilities](https://snyk.io/test/github/woodger/type-enforcement/badge.svg?targetFile=package.json)](https://snyk.io/test/github/woodger/type-enforcement?targetFile=package.json)
-<!-- [END badges] -->
 
 ##### [API docs](#api-docs) | [Examples](https://github.com/woodger/type-enforcement/blob/master/docs/examples.md)
 
-<!-- [START usecases] -->
 JavaScript dynamically typed and allows you to declare functions, objects, and variables without declaring a type. Although this feature simplifies the use of the language, it often requires the verification of input data. `Type Enforcement` helps verify the types of transmitted values on the runtime.
-<!-- [END usecases] -->
 
 <img src="http://yuml.me/diagram/scruffy;dir:LR/class/[TypeEnforcement]->declaration[rules],[rules]->order[validate()],[values{bg:cornsilk}]->[normalise()],[rules]->order[normalise()],[normalise()]-^correct[values{bg:cornsilk}],[values{bg:cornsilk}]->[validate()],[validate()]<>->0[Error{bg:tomato}],[validate()]<>->1[null{bg:yellowgreen}]">
 
@@ -125,9 +121,7 @@ function example(foo, bar) {
 }
 
 example('1'); // throw Error: Invalid value 'foo' in order '#example()'. Expected Number
-
 example(1); // throw Error: Invalid value 'bar' in order '#example()'. Expected Array
-
 example(1, []); // undefined
 ```
 
@@ -158,8 +152,7 @@ function example(foo = 0, bar = []) {
 example(); // undefined
 ```
 
-This only replaces `undefined` values with defaults, which is sane.
-The `skip` option allows you to check only part of the document, for example:
+This only replaces `undefined` values with defaults, which is sane. The `skip` option allows you to check only part of the document, for example:
 
 ```js
 const TypeEnforcement = require('type-enforcement');
@@ -180,7 +173,6 @@ function example(foo, bar) {
 }
 
 example('1'); // throw Error: Invalid value 'foo' in order '#example()'. Expected Number
-
 example(1); // undefined
 ```
 
