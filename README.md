@@ -1,7 +1,7 @@
 # Type Enforcement
 
 [![License](https://img.shields.io/npm/l/express.svg)](https://github.com/woodger/type-enforcement/blob/master/LICENSE)
-[![Build Status](https://travis-ci.com/woodger/type-enforcement.svg?branch=master)](https://travis-ci.com/woodger/type-enforcement)
+[![Build Status](https://travis-ci.org/woodger/type-enforcement.svg?branch=master)](https://travis-ci.org/woodger/type-enforcement)
 [![Coverage Status](https://coveralls.io/repos/github/woodger/type-enforcement/badge.svg)](https://coveralls.io/github/woodger/type-enforcement)
 [![Known Vulnerabilities](https://snyk.io/test/github/woodger/type-enforcement/badge.svg?targetFile=package.json)](https://snyk.io/test/github/woodger/type-enforcement?targetFile=package.json)
 
