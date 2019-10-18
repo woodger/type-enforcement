@@ -1,6 +1,6 @@
 {
   "name": "type-enforcement",
-  "version": "1.0.16",
+  "version": "1.0.17",
   "description": "TypeEnforcement is a class-based typing",
   "main": "index.js",
   "scripts": {
