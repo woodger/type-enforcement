@@ -1,61 +1,47 @@
-/**
- * This module for Node.js® implemented by following the ECMAScript® 2018
- * Language Specification Standard.
- *
- * https://www.ecma-international.org/ecma-262/9.0/index.html
- */
+const errorMessages = require('./error-messages');
 
-const basic = require('./basic');
-
-const error = (errno, ...yarn) => {
+const error = (errno, ...ignitor) => {
   let i = 0;
-  const message = basic.errorMessage[errno].replace(/%&/g, () => {
-    return yarn[i++];
+  const message = errorMessages[errno].replace(/%&/g, () => {
+    return ignitor[i++];
   });
 
   return new TypeError(message);
 };
 
-const objectsPrimitive = [
-  String,
-  Number,
-  Boolean,
-  Symbol
-];
-
 const is = {
   object(value) {
-    return value !== undefined && value !== null && typeof value === 'object';
+    return value !== null && typeof value === 'object';
   },
 
   string(value) {
-    return value !== undefined && value !== null && typeof value === 'string';
+    return typeof value === 'string';
   }
 };
 
 const enforcement = {
-  validate(Obj, value) {
+  validate(Class, value) {
     if (value === undefined || value === null) {
       return false;
     }
 
-    return Object.getPrototypeOf(value) === Obj.prototype;
+    return Object.getPrototypeOf(value) === Class.prototype;
   },
 
-  normalise(Obj, value) {
-    if (objectsPrimitive.includes(Obj)) {
+  normalise(Class, value) {
+    if ([ String, Number, Boolean, Symbol ].includes(Class)) {
       if (value === undefined) {
-        return Obj();
+        return Class();
       }
 
-      return Obj(value);
+      return Class(value);
     }
 
     if (value === undefined) {
-      return new Obj();
+      return new Class();
     }
 
-    return new Obj(value);
+    return new Class(value);
   }
 };
 
@@ -67,7 +53,7 @@ class TypeEnforcement {
 
     Object.freeze(rules);
 
-    const map = {};
+    const schema = {};
 
     Object.keys(rules).forEach((i) => {
       const sample = rules[i];
@@ -88,28 +74,28 @@ class TypeEnforcement {
         }
       }
 
-      map[i] = names;
+      schema[i] = names;
     });
 
     this.rules = rules;
-    this.map = map;
+    this.schema = schema;
   }
 
-  validate(order, doc, {skip = false} = {}) {
-    if (is.string(order) === false || is.object(doc) === false) {
+  validate(order, values, {skip = false} = {}) {
+    if (is.string(order) === false || is.object(values) === false) {
       return error(0);
     }
 
-    if (this.map.hasOwnProperty(order) === false) {
+    if (this.schema.hasOwnProperty(order) === false) {
       return error(3, order);
     }
 
-    const fields = Object.keys(doc);
+    const fields = Object.keys(values);
     const rule = this.rules[order];
-    const map = this.map[order];
+    const schema = this.schema[order];
 
     if (skip === false) {
-      const missing = map.filter((i) => {
+      const missing = schema.filter((i) => {
         return fields.indexOf(i) === -1;
       });
 
@@ -119,7 +105,7 @@ class TypeEnforcement {
     }
 
     const redundant = fields.filter((i) => {
-      return map.indexOf(i) === -1;
+      return schema.indexOf(i) === -1;
     });
 
     if (redundant.length > 0) {
@@ -127,32 +113,32 @@ class TypeEnforcement {
     }
 
     for (const i of fields) {
-      const Obj = rule[i];
-      const value = doc[i];
+      const Class = rule[i];
+      const value = values[i];
 
-      if (enforcement.validate(Obj, value) === false) {
-        return error(6, i, order, Obj.name);
+      if (enforcement.validate(Class, value) === false) {
+        return error(6, i, order, Class.name);
       }
     }
 
     return null;
   }
 
-  normalise(order, doc) {
-    if (is.string(order) === false || is.object(doc) === false) {
+  normalise(order, values) {
+    if (is.string(order) === false || is.object(values) === false) {
       throw error(0);
     }
 
-    if (this.map.hasOwnProperty(order) === false) {
+    if (this.schema.hasOwnProperty(order) === false) {
       throw error(3, order);
     }
 
-    const fields = Object.keys(doc);
+    const fields = Object.keys(values);
     const rule = this.rules[order];
-    const map = this.map[order];
+    const schema = this.schema[order];
 
     const redundant = fields.filter((i) => {
-      return map.indexOf(i) === -1;
+      return schema.indexOf(i) === -1;
     });
 
     if (redundant.length > 0) {
@@ -160,13 +146,13 @@ class TypeEnforcement {
     }
 
     for (const i of fields) {
-      const Obj = rule[i];
-      const value = doc[i];
+      const Class = rule[i];
+      const value = values[i];
 
-      doc[i] = enforcement.normalise(Obj, value);
+      values[i] = enforcement.normalise(Class, value);
     }
 
-    return doc;
+    return values;
   }
 }
 

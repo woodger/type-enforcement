@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/woodger/type-enforcement"
+    "url": "https://github.com/woodger/type-enforcement.git"
   },
   "keywords": [
     "typification",
     "arguments"
   ],
   "author": {
-    "name": "Stanislav Woodger",
+    "name": "Stanislav Potemkin",
     "email": "woodger@ya.ru"
   },
   "license": "MIT",
