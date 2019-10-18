@@ -1,9 +1,9 @@
-node_modules
-package-lock.json
-coverage
-test
-docs
 .git
 .gitignore
 .nyc_output
 .travis.yml
+coverage
+docs
+node_modules
+package-lock.json
+test

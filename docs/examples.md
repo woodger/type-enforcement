@@ -1,6 +1,6 @@
 ## Examples
 
-### [te.validate(order, doc, [options])](https://github.com/woodger/type-enforcement#tevalidateorder-doc-options)
+### [te.validate(order, values, [options])](https://github.com/woodger/type-enforcement#tevalidateorder-doc-options)
 
 This example shows the work of a larger list of values that are grouped into groups: [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive), [standard built-in objects](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects) and custom class.
 
@@ -30,16 +30,15 @@ const te = new TypeEnforcement({
   }
 });
 
-function example(order, doc) {
-  let err = te.validate(order, doc);
+const example = (order, values) => {
+  const err = te.validate(order, values);
 
-  if (err === null) {
-    console.log(`'${order}' values correspond to declared types`);
-  }
-  else {
+  if (err) {
     throw err;
   }
-}
+
+  console.log(`'${order}' values correspond to declared types`);
+};
 
 example('#primitive()', {
   string: '',

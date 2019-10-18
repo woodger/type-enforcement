@@ -68,7 +68,7 @@ describe('class TypeEnforcement', () => {
     });
   });
 
-  describe('te.validate(order, doc, [options])', () => {
+  describe('te.validate(order, values, [options])', () => {
     describe('One rule without fields', () => {
       const te = new TypeEnforcement({
         test: {}
@@ -178,7 +178,7 @@ describe('class TypeEnforcement', () => {
     });
   });
 
-  describe('te.normalise(order, doc)', () => {
+  describe('te.normalise(order, values)', () => {
     describe('One rule without fields', () => {
       const te = new TypeEnforcement({
         test: {}
@@ -228,10 +228,10 @@ describe('class TypeEnforcement', () => {
       });
 
       it('An empty document is mapped to a schema without fields', () => {
-        const doc = {};
-        const obj = te.normalise('test', doc);
+        const values = {};
+        const doc = te.normalise('test', values);
 
-        assert.strictEqual(obj, doc);
+        assert.strictEqual(doc, values);
       });
     });
 
@@ -267,7 +267,7 @@ describe('class TypeEnforcement', () => {
 
       it('A document with incorrect value types must be mapped to a schema',
       () => {
-        const obj = te.normalise('test', {
+        const doc = te.normalise('test', {
           s: undefined,
           n: '1',
           a: 4,
@@ -275,11 +275,11 @@ describe('class TypeEnforcement', () => {
           c: []
         });
 
-        assert(obj.s === '');
-        assert(obj.n === 1);
-        assert(obj.a.length === 4);
-        assert(typeof obj.f === 'function');
-        assert(obj.c instanceof Foo);
+        assert(doc.s === '');
+        assert(doc.n === 1);
+        assert(doc.a.length === 4);
+        assert(typeof doc.f === 'function');
+        assert(doc.c instanceof Foo);
       });
     });
   });
