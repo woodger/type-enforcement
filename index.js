@@ -1,14 +1,3 @@
-const errorMessages = require('./error-messages');
-
-const error = (errno, ...ignitor) => {
-  let i = 0;
-  const message = errorMessages[errno].replace(/%&/g, () => {
-    return ignitor[i++];
-  });
-
-  return new TypeError(message);
-};
-
 const is = {
   object(value) {
     return value !== null && typeof value === 'object';
@@ -29,7 +18,7 @@ const enforcement = {
   },
 
   normalise(Class, value) {
-    if ([ String, Number, Boolean, Symbol ].includes(Class)) {
+    if ([ String, Number, Boolean, Symbol, BigInt ].includes(Class)) {
       if (value === undefined) {
         return Class();
       }
@@ -48,7 +37,7 @@ const enforcement = {
 class TypeEnforcement {
   constructor(rules) {
     if (is.object(rules) === false) {
-      throw error(0);
+      throw new TypeError(`Unexpected argument or 'undefined' or 'null'`);
     }
 
     Object.freeze(rules);
@@ -59,18 +48,22 @@ class TypeEnforcement {
       const sample = rules[i];
 
       if (is.object(sample) === false) {
-        throw error(1, i);
+        throw new TypeError(
+          `Unexpected sample '${i}' or 'undefined' or 'null'`
+        );
       }
 
       const names = Object.keys(sample);
 
       for (const i of names) {
         if (sample[i] === undefined || sample[i] === null) {
-          throw error(2, i);
+          throw new TypeError(
+            `The prototype object '${i}' must have a constructor function`
+          );
         }
 
         if (typeof sample[i].prototype.constructor !== 'function') {
-          throw error(3, i);
+          throw new TypeError(`Order '${i}' not found`);
         }
       }
 
@@ -83,11 +76,11 @@ class TypeEnforcement {
 
   validate(order, values, {skip = false} = {}) {
     if (is.string(order) === false || is.object(values) === false) {
-      return error(0);
+      return new TypeError(`Unexpected argument or 'undefined' or 'null'`);
     }
 
     if (this.schema.hasOwnProperty(order) === false) {
-      return error(3, order);
+      return new TypeError(`Order '${order}' not found`);
     }
 
     const fields = Object.keys(values);
@@ -100,16 +93,16 @@ class TypeEnforcement {
       });
 
       if (missing.length > 0) {
-        return error(4, missing, order);
+        return new TypeError(`Missing fields '${missing}' in order '${order}'`);
       }
     }
 
-    const redundant = fields.filter((i) => {
+    const spare = fields.filter((i) => {
       return schema.indexOf(i) === -1;
     });
 
-    if (redundant.length > 0) {
-      return error(5, redundant, order);
+    if (spare.length > 0) {
+      return new TypeError(`Redundant fields '${spare}' in order '${order}'`);
     }
 
     for (const i of fields) {
@@ -117,7 +110,9 @@ class TypeEnforcement {
       const value = values[i];
 
       if (enforcement.validate(Class, value) === false) {
-        return error(6, i, order, Class.name);
+        return new TypeError(
+          `Invalid value '${i}' in order '${order}'. Expected ${Class.name}`
+        );
       }
     }
 
@@ -126,23 +121,23 @@ class TypeEnforcement {
 
   normalise(order, values) {
     if (is.string(order) === false || is.object(values) === false) {
-      throw error(0);
+      throw new TypeError(`Unexpected argument or 'undefined' or 'null'`);
     }
 
     if (this.schema.hasOwnProperty(order) === false) {
-      throw error(3, order);
+      throw new TypeError(`Order '${order}' not found`);
     }
 
     const fields = Object.keys(values);
     const rule = this.rules[order];
     const schema = this.schema[order];
 
-    const redundant = fields.filter((i) => {
+    const spare = fields.filter((i) => {
       return schema.indexOf(i) === -1;
     });
 
-    if (redundant.length > 0) {
-      throw error(5, redundant, order);
+    if (spare.length > 0) {
+      throw new TypeError(`Redundant fields '${spare}' in order '${order}'`);
     }
 
     for (const i of fields) {
