@@ -7,7 +7,7 @@
 
 ##### [Examples](https://github.com/woodger/type-enforcement/blob/master/docs/examples.md)
 
-`Type Enforcement` is a js library for class-based typing.
+`Type Enforcement` is a js simple and flat library for class-based typing.
 
 ![Uml diagramm](http://yuml.me/diagram/scruffy;dir:LR/class/[TypeEnforcement]->rules[scheme],[scheme]->order[validate],[values{bg:cornsilk}]->[normalise],[scheme]->order[normalise],[normalise]-^[values{bg:cornsilk}],[values{bg:cornsilk}]->[validate],[validate]<>->0[Error{bg:tomato}],[validate]<>->1[null{bg:yellowgreen}])
 
@@ -46,8 +46,9 @@ In the code there can be more than one validation of the input data, so the rule
 Except for `null` and `undefined`, all [primitive](https://developer.mozilla.org/en-US/docs/Glossary/Primitive) values have object equivalents that wrap around the primitive values:
 * [String](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) for string primitive.
 * [Number](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number) for the number of the primitive.
-* [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) for the Boolean primitive.
+* [Boolean](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean) for the boolean primitive.
 * [Symbol](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol) for Symbol primitive.
+* [BigInt](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt) for the big number of the primitive.
 
 Therefore, primitives can be declared via an object:
 

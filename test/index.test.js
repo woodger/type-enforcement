@@ -106,7 +106,8 @@ describe('class TypeEnforcement', () => {
         test: {
           s: String,
           a: Array,
-          m: Map
+          m: Map,
+          i: BigInt
         }
       });
 
@@ -133,7 +134,8 @@ describe('class TypeEnforcement', () => {
         const err = te.validate('test', {
           s: null,
           a: [],
-          m: new Map()
+          m: new Map(),
+          i: 9007199254740992n
         });
 
         assert(err instanceof TypeError);
